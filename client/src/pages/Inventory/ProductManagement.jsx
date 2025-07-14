@@ -1,37 +1,55 @@
-import { useState } from "react";
-import { createProduct } from "../../models/productModel";
-import ProductTable from "../../components/ProductTable";
-import ProductFormModal from "../../components/ProductFormModal";
+import { useState, useEffect } from "react";
+import ProductTable from "../../components/products/ProductTable";
+import ProductFormModal from "../../components/products/ProductFormModal";
+
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function ProductManagement() {
   const [products, setProducts] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
 
-  const handleSave = data => {
-    if (editingProduct) {
-      setProducts(prev =>
-        prev.map(p => (p.id === editingProduct.id ? { ...p, ...data } : p))
-      );
-    } else {
-      const newProduct = createProduct(data);
-      setProducts(prev => [...prev, newProduct]);
+
+  // Fetch products from API
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/products`);
+      const data = await res.json();
+      setProducts(data);
+    } catch (err) {
+      console.error("Failed to fetch products:", err);
     }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  // Called after adding/editing a product
+  const handleSave = () => {
+    fetchProducts(); // reload updated list
     setEditingProduct(null);
   };
 
-  const handleDelete = id => {
-    setProducts(prev => prev.filter(p => p.id !== id));
+  const handleDelete = async (id) => {
+    try {
+      await fetch(`${API_BASE_URL}/api/products/${id}`, {
+        method: "DELETE",
+      });
+      setProducts(prev => prev.filter(p => p.id !== id));
+    } catch (err) {
+      console.error("Failed to delete product:", err);
+    }
   };
 
-  const handleEdit = product => {
+  const handleEdit = (product) => {
     setEditingProduct(product);
     setModalOpen(true);
   };
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">📦 Product Management</h1>
       <button
         onClick={() => {
           setEditingProduct(null);

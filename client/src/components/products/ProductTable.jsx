@@ -1,4 +1,5 @@
 export default function ProductTable({ products, onEdit, onDelete }) {
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full border text-sm text-left">
@@ -18,7 +19,7 @@ export default function ProductTable({ products, onEdit, onDelete }) {
           {products.map(product => (
             <tr key={product.id} className="border-t">
               <td className="p-2">
-                <img src={product.image} alt="" className="w-10 h-10 object-cover rounded" />
+                <img src={API_BASE_URL + product.image} alt="" className="w-10 h-10 object-cover rounded" />
               </td>
               <td className="p-2">{product.name}</td>
               <td className="p-2">₱{product.unitPrice}</td>
@@ -27,8 +28,8 @@ export default function ProductTable({ products, onEdit, onDelete }) {
               <td className="p-2">{product.description}</td>
               <td className="p-2">{new Date(product.dateCreated).toLocaleString()}</td>
               <td className="p-2 space-x-2">
-                <button onClick={() => onEdit(product)} className="text-blue-600">Edit</button>
-                <button onClick={() => onDelete(product.id)} className="text-red-600">Delete</button>
+                <button onClick={() => onEdit(product)} className="text-white bg-blue-600 rounded-lg p-2">Edit</button>
+                <button onClick={() => onDelete(product.id)} className="bg-red-600 text-whites rounded-lg p-2 ">Delete</button>
               </td>
             </tr>
           ))}
