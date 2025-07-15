@@ -1,24 +1,20 @@
 import { useState, useEffect } from "react";
 import ProductTable from "../../components/products/ProductTable";
 import ProductFormModal from "../../components/products/ProductFormModal";
-
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import axios from "../../utils/axiosInstance"; // Use the axios instance
 
 export default function ProductManagement() {
   const [products, setProducts] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
 
-
-  // Fetch products from API
+  // Fetch products
   const fetchProducts = async () => {
     try {
-      const res = await fetch(`${API_BASE_URL}/api/products`);
-      const data = await res.json();
-      setProducts(data);
+      const res = await axios.get('/api/products');
+      setProducts(res.data);
     } catch (err) {
-      console.error("Failed to fetch products:", err);
+      console.error("❌ Failed to fetch products:", err);
     }
   };
 
@@ -26,20 +22,17 @@ export default function ProductManagement() {
     fetchProducts();
   }, []);
 
-  // Called after adding/editing a product
   const handleSave = () => {
-    fetchProducts(); // reload updated list
+    fetchProducts();
     setEditingProduct(null);
   };
 
   const handleDelete = async (id) => {
     try {
-      await fetch(`${API_BASE_URL}/api/products/${id}`, {
-        method: "DELETE",
-      });
+      await axios.delete(`/api/products/${id}`);
       setProducts(prev => prev.filter(p => p.id !== id));
     } catch (err) {
-      console.error("Failed to delete product:", err);
+      console.error("❌ Failed to delete product:", err);
     }
   };
 

@@ -10,6 +10,7 @@ export default function Topbar({ onToggleSidebar, onToggleDark, isDark }) {
     if (path.includes('/payroll')) return 'Payroll';
     if (path.includes('/dashboard')) return 'Dashboard';
     if (path.includes('/sales')) return 'Sales';
+    if (path.includes('/user')) return 'User Management';
     return 'Crave Corner';
   };
 

@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
 
+import ProductManagement from '../pages/Inventory/ProductManagement'; // Add at the top
 
 export default function DashboardLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -31,7 +32,7 @@ export default function DashboardLayout() {
     const timeout = setTimeout(() => setIsLoading(false), 1000); // Simulate delay
     return () => clearTimeout(timeout);
   }, [location]);
-
+console.log(location.pathname)
   return (
     <div className={`flex h-screen overflow-hidden ${isDark ? 'dark' : ''}`}>
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(prev => !prev)} />

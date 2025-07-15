@@ -7,6 +7,7 @@ import {
   DollarSign,
   ChevronRight,
   ChevronLeft,
+  User
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
@@ -17,6 +18,7 @@ const links = [
   { to: '/pos', label: 'POS', icon: <ShoppingCart size={18} /> },
   { to: '/payroll', label: 'Payroll', icon: <Users size={18} /> },
   { to: '/sales', label: 'Sales', icon: <DollarSign size={18} /> },
+  { to: '/user', label: 'Users', icon: <User size={18} /> },
 ];
 
 export default function Sidebar({ isOpen, toggleSidebar }) {
